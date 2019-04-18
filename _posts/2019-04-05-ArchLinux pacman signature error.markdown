@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "2019-04-05-ArchLinux pacman signature error"
-date:   2019-03-28 18:10:09 +0800
+title:  "ArchLinux pacman signature error"
+date:   2019-04-05 18:10:09 +0800
 categories: archLinux
 ---
 pacman -S 安装软件包出现签名错误
