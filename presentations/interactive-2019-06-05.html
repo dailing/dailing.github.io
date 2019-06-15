@@ -8,8 +8,11 @@
 
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/theme/serif.css">
     <link rel="stylesheet" href="css/w3.css">
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/monokai.css">
@@ -26,20 +29,184 @@
   <body>
     <div class="reveal">
       <div class="slides">
+
         <section>
-          <h3>Interactive Image Segmentation</h3>
+          <h2>Interactive Image Segmentation</h2>
           Label Man + CNN  ==> Super Label Man
         </section>
-        <section  id="last" data-markdown>
-            <label for="male"></label>
-            <textarea data-template>
-              ### reference
-              * [We don’t need no bounding-boxes: Training object class detectors using only human verification.](http://homepages.inf.ed.ac.uk/keller/publications/cvpr16.pdf)
-              * [“GrabCut” — Interactive Foreground Extraction using Iterated Graph Cuts](https://cvg.ethz.ch/teaching/cvl/2012/grabcut-siggraph04.pdf)
-              * [Deep Interactive Object Selection](https://arxiv.org/pdf/1603.04042.pdf)
-              * [Annotating Object Instances with a Polygon-RNN](https://www.cs.toronto.edu/~urtasun/publications/castrejon_etal_cvpr17.pdf)
-              * [Efficient Interactive Annotation of Segmentation Datasets with Polygon-RNN++](http://openaccess.thecvf.com/content_cvpr_2018/papers/Acuna_Efficient_Interactive_Annotation_CVPR_2018_paper.pdf)
-            </textarea>
+
+        <section>
+          <div class="w3-container">
+              <h3>Reference</h3>
+              <ul >
+                <li><a href="http://homepages.inf.ed.ac.uk/keller/publications/cvpr16.pdf">We don’t need no bounding-boxes: Training object class detectors using only human verification. </a></li>
+                <li><a href="https://cvg.ethz.ch/teaching/cvl/2012/grabcut-siggraph04.pdf">“GrabCut” — Interactive Foreground Extraction using Iterated Graph Cuts </a></li>
+                <li><a href="https://arxiv.org/pdf/1603.04042.pdf">Deep Interactive Object Selection </a></li>
+                <li><a href="https://www.cs.toronto.edu/~urtasun/publications/castrejon_etal_cvpr17.pdf">Annotating Object Instances with a Polygon-RNN </a></li>
+                <li><a href="http://openaccess.thecvf.com/content_cvpr_2018/papers/Acuna_Efficient_Interactive_Annotation_CVPR_2018_paper.pdf">Efficient Interactive Annotation of Segmentation Datasets with Polygon-RNN++</a></li>
+              </ul>              
+          </div>
+        </section>
+
+        <section>
+          <div class="w3-container w3-tail">
+            <h3>What are we dealing with</h3>
+            <img src="image/interactive-2019-06-05.img1.png" class="w3-round" alt="Norway">
+          </div>
+        </section>
+
+        <section>
+          <div class="w3-container w3-tail">
+            <h3>GrabCut:Old Fashion CV </h3>
+            <div class="w3-col l5">
+              <img src="image/interactive-2019-06-05.img-grubcut.png">
+            </div>
+            <div class="w3-col l7">
+              <p>
+                Problem:<br> Segment foreground from background
+              </p>
+              <p>
+                Given that:<br> Foureground in given bounding box.
+              </p>
+              <p> Method: <br>
+                Defind an Energy function $ E $, <br>
+                Use Graph Cut to minimum $ E $ <br>
+                Done!
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="w3-container w3-tail">
+              <h3>WTF! Energy? Graph Cut?</h3>
+              <div class="w3-col l6">
+                <p>Energy: <br>Regional + Boundary</p>
+                $$ E(L)=\sum_{p}-D_{p}\left(L_{p}\right)+\sum_{p q \in N} w_{p q} \cdot \delta\left(L_{p} \neq L_{q}\right) $$
+                <p>
+                  In this paper:
+                  $$\mathbf{E}(\underline{\alpha}, \mathbf{k}, \underline{\theta}, \mathbf{z})=U(\underline{\alpha}, \mathbf{k}, \underline{\theta}, \mathbf{z})+V(\underline{\alpha}, \mathbf{z})$$
+                  $ U $ evaluates the fit of the opacity distribution <br>
+                  $ V $ evaluates the smoothness of segmentation.
+                </p>
+
+              </div>
+              <div class="w3-col l6">
+                <p>Max-Flow/Min-Cut</p>
+                <img src="image/interactive-2019-06-05.img-grubcut1.png">
+              </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="w3-container w3-tail">
+              <h3>Details in Energy Function</h3>
+              <div class="w3-col l8">
+                  $$\mathbf{E}(\underline{\alpha}, \mathbf{k}, \underline{\theta}, \mathbf{z})=U(\underline{\alpha}, \mathbf{k}, \underline{\theta}, \mathbf{z})+V(\underline{\alpha}, \mathbf{z})$$
+                  $$U(\underline{\alpha}, \mathbf{k}, \underline{\theta}, \mathbf{z})=\sum_{n} D\left(\alpha_{n}, k_{n}, \underline{\theta}, z_{n}\right)$$
+                  $$D\left(\alpha_{n}, k_{n}, \underline{\theta}, z_{n}\right)=-\log p\left(z_{n} | \alpha_{n}, k_{n}, \underline{\theta}\right)-\log \pi\left(\alpha_{n}, k_{n}\right)$$
+                  $$\begin{array}{c}{D\left(\alpha_{n}, k_{n}, \underline{\theta}, z_{n}\right)=-\log \pi\left(\alpha_{n}, k_{n}\right)+\frac{1}{2} \log \operatorname{det} \Sigma\left(\alpha_{n}, k_{n}\right)} \\ {\qquad+\frac{1}{2}\left[z_{n}-\mu\left(\alpha_{n}, k_{n}\right)\right]^{\top} \Sigma\left(\alpha_{n}, k_{n}\right)^{-1}\left[z_{n}-\mu\left(\alpha_{n}, k_{n}\right)\right]}\end{array}$$
+                  $$\underline{\theta}=\{\pi(\alpha, k), \mu(\alpha, k), \Sigma(\alpha, k), \alpha=0,1, k=1 \ldots K\}$$
+                  $$V(\underline{\alpha}, \mathbf{z})=\gamma \sum_{(m, n) \in \mathbf{C}}\left[\alpha_{n} \neq \alpha_{m}\right] \exp -\beta\left\|z_{m}-z_{n}\right\|^{2}$$
+                </div>
+                <div class="w3-col l4">
+                  <ul>
+                    <li>$\underline{\theta}$:histogram model θ</li>
+                    <li>$[\phi]$: Binary function</li>
+                    <li>$\operatorname{dis}(\cdot)$: Euclidean distance ofneighbouring</li>
+                    <li>$ \mathbf{C}$: neighboring pixels</li>
+                    <li>$p(\cdot)$:Gaussian probability distribution,</li>
+                    <li>$\pi(\cdot):$mixture weighting coefficients</li>
+                  </ul>
+              </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="w3-container w3-tail">
+              <h3>WTF! Probabillity? GMM?</h3>
+              <div class="w3-col l8">
+                <p>
+                    Gaussian Mixture Model：<br>
+                    a probabilistic model for representing normally distributed subpopulations within an overall population.
+                </p>
+                  $$\begin{aligned} p(\vec{x}) &=\sum_{i=1}^{K} \phi_{i} \mathcal{N}\left(\vec{x} | \vec{\mu}_{i}, \Sigma_{i}\right) \\ \mathcal{N}\left(\vec{x} | \vec{\mu}_{i}, \Sigma_{i}\right) &=\frac{1}{\sqrt{(2 \pi)^{K}\left|\Sigma_{i}\right|}} \exp \left(-\frac{1}{2}\left(\vec{x}-\vec{\mu}_{i}\right)^{\mathrm{T}} \Sigma_{i}^{-1}\left(\vec{x}-\vec{\mu}_{i}\right)\right) \\ \sum_{i=1}^{K} \phi_{i} &=1 \end{aligned}$$
+              </div>
+              <div class="w3-col l4">
+                <img src="image/interactive-2019-06-05.img-gmm.png">
+              </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="w3-container w3-tail">
+              <h3>How it works anyway?</h3>
+              <div class="w3-col l6">
+                <img src="image/interactive-2019-06-05.img-grubcut2.png">
+              </div>
+              <div class="w3-col l6">
+                  <img src="image/interactive-2019-06-05.img-grubcut3.png">
+                  <img src="image/interactive-2019-06-05.img-grubcut4.png">
+              </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="w3-container w3-tail">
+            <h3>The New Age!</h3>
+            <div class="w3-row">
+              <div  style="margin-left: auto; margin-right: auto; width: 60%">
+                <img src="image/interactive-2019-06-05.img-deep_interactive1.png">
+              </div>
+            </div>
+          </div>
+          <div class="w3-col l1"><p> </p></div>
+          <div class="w3-col l5">
+            <img src="image/interactive-2019-06-05.img-deep_interactive2.png">
+          </div>
+          <div class="w3-col l5">
+            <img src="image/interactive-2019-06-05.img-deep_interactive3.png">
+          </div>
+        </section>
+        <section>
+          <div class="w3-container w3-tail">
+            <h3>Graph Cut Again!</h3>
+            <div class="w3-col s8">
+              $$E(L)=\lambda \cdot R(L)+B(L)$$
+              $$R(L)=\sum_{p_{i j} \in \mathcal{P}} R_{p_{i j}}\left(L_{p_{i j}}\right)$$
+              $$R_{p_{i j}}\left(L_{p_{i j}}\right)=\left\{\begin{array}{ll}{-\log \left(q_{i j}\right),} & {\text { if } L_{p_{i j}}\text { in object}} \\ {-\log \left(1-q_{i j}\right),} & {\text { otherwise }}\end{array}\right.$$
+              $$B(L)=\sum_{\left\{p_{i j}, p_{m n}\right\} \in \mathcal{N}} B_{\left\{p_{i j}, p_{m n}\right\}} \cdot \delta\left(L_{p_{i j}}, L_{p_{m n}}\right)$$
+              $$B_{\left\{p_{i j}, p_{m n}\right\}} \propto \exp \left(-\frac{\left(I_{p_{i j}}-I_{p_{m n}}\right)^{2}}{2 \sigma^{2}}\right) \cdot \frac{1}{\operatorname{dist}\left(p_{i j}, p_{m n}\right)}$$
+            </div>
+            <div class="w3-col s4">
+              <ul>
+                <li>$\delta (\cdot) = 1$ if two pixels are in the same group</li>
+                <li>$\lambda$: balance parameter</li>
+                <li>$L$: segmentation result</li>
+                <li>$I$: image pixel data</li>
+                <li>$p_{ij}$: pixel at $i$ row and $j$ colume</li>
+                <li>$q_{ij}$: probability of pixel $i,j$ being foreground. Softmax value from network.</li>
+                <li>$dist(\cdot)$: Gaussian distance</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3>Graph Cut Helps!</h3>
+          <div class="w3-container w3-tail">
+            <div class="w3-col s12">
+              <img src="image/interactive-2019-06-05.img-deep_interactive4.png" style="width:40%">
+              <img src="image/interactive-2019-06-05.img-deep_interactive5.png" style="width: 80%">
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>No Bounding Boxes, Just Yes and No</h3>
+          <img src="image/interactive-2019-06-05.img-yes_no1.png">
+        </section>
+        <section>
+          
         </section>
       </div>
     </div>
@@ -50,11 +217,24 @@
       Reveal.initialize({
         slideNumber: true,
         hash: true,
+        pdfMaxPagesPerSlide: 1 ,
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          jax: ["input/TeX","input/MathML","input/AsciiMath","output/CommonHTML"],
+          extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","AssistiveMML.js", "a11y/accessibility-menu.js"],
+          TeX: {
+            extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+          }
+        },
+
         dependencies: [
           { src: 'plugin/markdown/marked.js' },
           { src: 'plugin/markdown/markdown.js' },
           { src: 'plugin/notes/notes.js', async: true },
-          { src: 'plugin/highlight/highlight.js', async: true }
+          { src: 'plugin/highlight/highlight.js', async: true },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/math/math.js', async: true }
         ]
       });
     </script>

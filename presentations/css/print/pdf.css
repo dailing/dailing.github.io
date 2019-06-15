@@ -24,7 +24,7 @@ html {
 }
 
 /* Remove any elements not needed in print. */
-.nestedarrow,
+/* .nestedarrow,
 .reveal .controls,
 .reveal .progress,
 .reveal .playback,
@@ -37,7 +37,7 @@ html {
 
 h1, h2, h3, h4, h5, h6 {
 	text-shadow: 0 0 0 #000 !important;
-}
+} */
 
 .reveal pre code {
 	overflow: hidden !important;
