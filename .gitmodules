@@ -1,0 +1,3 @@
+[submodule "presentation.my/zoom.js"]
+	path = presentation.my/zoom.js
+	url = git@github.com:hakimel/zoom.js.git

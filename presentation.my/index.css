@@ -1,0 +1,23 @@
+.slide {
+    width: 1024;
+    height: 576;
+    background-color: rgb(224, 224, 224);
+    border: 1;
+    border-width: 1px;
+    border-color: brown;
+    margin: 5px;
+    font: 200%;
+    position: relative;
+}
+
+.page_number {
+    position: absolute;
+    bottom: 0;
+    right: 20;
+}
+
+body {
+    background-color: black;
+    overflow: hidden;
+    position: fixed;
+}

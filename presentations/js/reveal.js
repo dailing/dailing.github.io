@@ -3465,7 +3465,7 @@
 	/**
 	 * Updates the state of all control/navigation arrows.
 	 */
-	function updateControls() {
+	function u0pdateControls() {
 
 		var routes = availableRoutes();
 		var fragments = availableFragments();
