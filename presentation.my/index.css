@@ -1,13 +1,18 @@
 .slide {
     width: 1024;
     height: 576;
-    background-color: rgb(224, 224, 224);
+    background-color: rgb(49, 49, 49);
+    color: rgb(82, 82, 82);
     border: 1;
     border-width: 1px;
     border-color: brown;
     margin: 5px;
     font: 200%;
     position: relative;
+}
+
+.slide.active {
+    background-color: rgb(224, 224, 224);
 }
 
 .page_number {
