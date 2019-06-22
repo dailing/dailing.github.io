@@ -1,5 +1,5 @@
 .slide {
-    width: 1024;
+    width: 1224;
     height: 576;
     background-color: rgb(49, 49, 49);
     color: rgb(82, 82, 82);
@@ -9,10 +9,25 @@
     margin: 5px;
     font: 200%;
     position: relative;
+    visibility: hidden;
+    flex-flow: column;
+    display: flex;
 }
 
 .slide.active {
     background-color: rgb(224, 224, 224);
+    visibility: visible;
+}
+
+.slide_content{
+    margin: 10px;
+    flex-grow : 1;
+}
+
+.slide_head{
+    width: 100%;
+    margin-left: 10px;
+    /* height: 30px; */
 }
 
 .page_number {
@@ -21,8 +36,13 @@
     right: 20;
 }
 
+.slide img{
+    width: 100%;
+}
+
 body {
     background-color: black;
     overflow: hidden;
     position: fixed;
+    font-size: 20px;
 }

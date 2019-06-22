@@ -12,7 +12,7 @@ Vue.component('slide', {
     methods: {
     },
     mounted(){
-        console.log(this);
+        // console.log(this);
         me_index = this.$parent.register_slide(this);
         this.slide_index = me_index;
     },
@@ -25,13 +25,13 @@ Vue.component('slide', {
             <h1>{{ title }}</h1>
         </div>
     </slot>
-    <div class="slide_content" style="height: 100%">
+    <div class="slide_content">
         <slot></slot>
     </div>
     <div class="page_number">
-        <a v-on:click="$parent.prev()"> <= </a>
+        <a v-on:click="$parent.prev()" > < </a>
         {{ slide_index }}
-        <a v-on:click="$parent.next()"> => </a>
+        <a v-on:click="$parent.next()" > > </a>
     </div>
 </div>
 `,
@@ -62,6 +62,13 @@ var app = new Vue({
             return this.current_url + "#" + i;
         },
         goto(page){
+            // return;
+            if (this.transform_tleft === null){
+                box = this.slides[0].$el.getBoundingClientRect();
+                this.transform_tleft = box.left;
+                this.transform_ttop = box.top;
+            }
+            console.log('goto ' + page);
             prev_page = this.current_slide;
             page = Math.min(page, this.slide_count-1);
             page = Math.max(page, 0);
@@ -71,16 +78,16 @@ var app = new Vue({
                 // animation here
                 box = this.slides[page].$el.getBoundingClientRect()
                 ratio = window.innerWidth / box.width;
-                ratio = Math.min(window.innerHeight / box.height);
+                ratio = Math.min(window.innerHeight / box.height, ratio);
                 this.transform_scale *= ratio;
                 this.transform_tleft -= box.left;
-                this.transform_ttop -= box.top
+                this.transform_ttop +=  - box.top * ratio
 
                 transform = 'translate('+ this.transform_tleft +
-                    'px,' + this.transform_ttop + 'px)' + ' scale(' + 
-                    this.transform_scale + ')';
+                    'px,' + this.transform_ttop + 'px) ' + ' scale(' +  this.transform_scale + ') ';
                 console.log(transform);
-                origin = 'top left';
+                // origin =  window.innerHeight / 2 - box.height * ratio / 2 + 'px left';
+                origin =  ' top left';
                 // console.log(this.slides[page].$el.style)
 				document.body.style.transformOrigin = origin;
 				document.body.style.OTransformOrigin = origin;
@@ -116,9 +123,10 @@ var app = new Vue({
         }else{
             this.goto(0);
         }
+        this.goto(this.current_slide);
         this.w_height = window.innerHeight;
         this.w_width = window.innerWidth;
-        console.log(this);
         console.log('get current url ' + this.current_url);
+
     }
 })
