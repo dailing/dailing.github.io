@@ -56,7 +56,9 @@ main {
  */
 img {
   max-width: 80%;
-  vertical-align: middle;
+  // vertical-align: middle;
+  margin: 0 auto;
+  display: block;
 }
 
 
