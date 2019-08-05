@@ -97,13 +97,64 @@ More on this!
 # noise-tolerance loss function
 Loss functions such as ramp loss, unhinged loss, MSE and MAE can be used to train more robust models. But it should be noted that DNN can learn random labels by memorizing. The power of loss is limited.
 
+## Weighted Approximate-Rank Pairwise (WARP) Loss
+> Weston, J., Bengio, S., & Usunier, N. (2011). WSABIE: Scaling up to large vocabulary image annotation. IJCAI International Joint Conference on Artificial Intelligence, 2764–2770. https://doi.org/10.5591/978-1-57735-516-8/IJCAI11-460
+
+Consider the task of ranking labels $i \in \mathcal{Y}$ given an example x. In our setting labeled pairs $(x, y)$ will be provided for training where only a single annotation $y_i \in \mathcal{Y}$ is labeled correct. Let $f(x) \in \mathbb{R}^{Y}$ be a vector function providing a score for each of the labels, where $f_i(x)$ is the value for label $i$. Ranking error functions is defined as:
+
+$$ err(f(x),y) = L(\operatorname{rank}_y(f(x))) $$
+
+$$
+\operatorname{rank}_{y}(f(x))=\sum_{i \neq y} I\left(f_{i}(x) \geq f_{y}(x)\right)
+$$
+
+$$L(k)=\sum_{j=1}^k\alpha_j, \text{with } \alpha_1 \geq \alpha_2 \geq \cdots\geq 0$$
+
+- $\operatorname{rank}_y(f(c))$ is the rank of the true label $y$ given by $f(x)$.
+- $I$ is the indicator function.
+- $L(\cdot)$ transform the rank into a loss
+- $\alpha_j=\frac{1}{j}$ yield the best result.
+
+The loss function is equal to 
+
+$$err(f(x),y) = \sum_{i \neq y}L(\operatorname{rank}_y(f(x)))\frac{I(f_i(x) \geq f_y(x))}{\operatorname{rank}_y(f(x))}$$
+
+- $0/0=0$ when the correct  label $y$ is top ranked.
+
+Note that this formulation is not differentiable.
+Using the hinge loss instead of the indicator function to add a margin and make the loss continuous, $err$ can be approximated by:
+
+$$
+\overline{\operatorname{err}}(f(x), y)=\sum_{i \neq y} L\left(\operatorname{rank}_{y}^{1}(f(x))\right) \frac{\left|1-f_{y}(x)+f_{i}(x)\right|_{+}}{\operatorname{rank}_{y}^{1}(f(x))}
+$$
+
+$$
+\operatorname{rank}_{y}^{1}(f(x))=\sum_{i \neq y} I\left(1+f_{i}(x)>f_{y}(x)\right)
+$$
+
+$$
+\operatorname{Risk}(f)=\int \overline{\operatorname{err}}(f(x), y) d P(x, y)
+$$
+
+- $|t|_+$ is the positive part of $t$
+- $\operatorname{rank}_{y}^{1}(f(x))$ is the margin penalized rank of $y$
+- $\operatorname{Risk}(f)$ is what we want to minimize
+
+An unbiased estimator of this risk can be obtained by stochastically sampling. To do this:
+1. Sample a pair $(x, y)$ according to $P(x, y)$
+1. For the chosen $(x, y)$ sample a violating label $\overline{y}$ such that $1 + f_{\overline{y}}(x) > f_y(x)$
+
+
+![](/asserts/post/2019-08-03-learning-with-noisy-labels/wrap_loss_1.png)
+
+
 more on this!
 
 # Joint Optimization Framework for Learning with Noisy Labels
 > Tanaka, D., Ikami, D., Yamasaki, T., & Aizawa, K. (2018). Joint Optimization Framework for Learning with Noisy Labels. Proceedings of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition, 5552–5560. https://doi.org/10.1109/CVPR.2018.00582
 
 ## Framework
-![Frame work](/asserts\post\2019-08-03-learning-with-noisy-labels\joint_optim_1.png)
+![Frame work](/asserts/post/2019-08-03-learning-with-noisy-labels/joint_optim_1.png)
 
 The overall training procedure can be divided into tow step, initial training and training with modified labels:
 
@@ -111,7 +162,7 @@ The overall training procedure can be divided into tow step, initial training an
    - Labels are updated (starting from the 70th epoch) using the result of trained network.
    - label $\boldsymbol{y}_i$ are updated with probability $\boldsymbol{s}$
    - average output probability of the past 10 epoch are used as $\boldsymbol{s}$
-1. Train the network again using the new labels
+2. Train the network again using the new labels
    - learning rate is decreased in this stage to better fit to data.
    - only $\mathcal{L}_c$, classification loss, is used in this stage.
 
