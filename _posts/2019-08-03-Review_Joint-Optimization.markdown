@@ -270,6 +270,7 @@ $$
 $$
 \begin{aligned} \mathcal{L}_{\mathrm{QC}}\left(\Theta ; \mathcal{D}^{\prime}\right)=-& \frac{1}{n} \sum_{i=1}^{n}\left(\beta p\left(\hat{y}_{i} | x_{i} ; \Theta\right)+(1-\beta) y_{i}^{\prime}\right)  \times \log p\left(\hat{y}_{i} | x_{i} ; \Theta\right) \\=-& \frac{1}{n} \sum_{i=1}^{n}\left(\beta\left[\sigma\left(t_{1}(x ; \Theta)\right)\right)\right]_{\hat{y}_{i}}+(1-\beta) y_{i}^{\prime} \times \log \left[\sigma\left(t_{1}(x ; \Theta)\right)\right]_{\hat{y}_{i}} \end{aligned}
 $$
+
 * $f_1(\Theta, x)$: CNN
 * $\sigma(.)$: softmax
 * $y$: true label
