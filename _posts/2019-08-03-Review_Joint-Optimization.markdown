@@ -250,3 +250,78 @@ The plot of $-x\log(x)$ is like this:
 ![Frame work](/asserts\post\2019-08-03-learning-with-noisy-labels\joint_optim_2.png)
 
 So basically this regularization will push $s_{j}(\boldsymbol{\theta}, \boldsymbol{x}_{i})$ towards 0 or 1. But in fact, both $\mathcal{L}_p$ and $\mathcal{L}_e$ will make the optimization out of local minimum. And there is no experiment to prove that $\mathcal{L}_e$ actually help with the situation.
+
+# Nonlinear, Noise-aware, Quasi-clustering Approach to Learning Deep CNNs from Noisy Labels
+
+> Cvpr, A., & Id, P. (2019). A Nonlinear , Noise-aware , Quasi-clustering Approach to Learning Deep CNNs from Noisy Labels. CVPR.
+
+The author presented a Nonlinear, Noise-aware, Quasi-clustering (NNAQC), a method for learning deep convolutional networks from datasets corrupted by unknown label noise.
+## Framework
+![Frame work](/asserts\post\2019-08-03-learning-with-noisy-labels\NNAQC.png)
+
+$$
+\mathcal{L}\left(\Theta, W ; \mathcal{D}^{\prime}\right)=\alpha \mathcal{L}_{\mathrm{NNA}}\left(\Theta, W ; \mathcal{D}^{\prime}\right)+(1-\alpha) \mathcal{L}_{\mathrm{QC}}\left(\Theta ; \mathcal{D}^{\prime}\right)
+$$
+
+$$
+\begin{aligned} \mathcal{L}_{\mathrm{NNA}}\left(\Theta, W ; \mathcal{D}^{\prime}\right) &=-\frac{1}{n} \sum_{i=1}^{n} \log p\left(y^{\prime}=\hat{y}_{i}^{\prime} | x_{i} ; \Theta, W\right) \\ &=-\frac{1}{n} \sum_{i=1}^{n} \log \left[\sigma\left(W \sigma\left(t_{1}\left(x_{i} ; \Theta\right)\right)\right)\right]_{\hat{y}_{i}} \end{aligned}
+$$
+
+$$
+\begin{aligned} \mathcal{L}_{\mathrm{QC}}\left(\Theta ; \mathcal{D}^{\prime}\right)=-& \frac{1}{n} \sum_{i=1}^{n}\left(\beta p\left(\hat{y}_{i} | x_{i} ; \Theta\right)+(1-\beta) y_{i}^{\prime}\right)  \times \log p\left(\hat{y}_{i} | x_{i} ; \Theta\right) \\=-& \frac{1}{n} \sum_{i=1}^{n}\left(\beta\left[\sigma\left(t_{1}(x ; \Theta)\right)\right)\right]_{\hat{y}_{i}}+(1-\beta) y_{i}^{\prime} \times \log \left[\sigma\left(t_{1}(x ; \Theta)\right)\right]_{\hat{y}_{i}} \end{aligned}
+$$
+* $f_1(\Theta, x)$: CNN
+* $\sigma(.)$: softmax
+* $y$: true label
+* $y'$: noisy label
+* $\hat{y}$: predicted true label probability
+* $l_1(\hat{y}, W) = W\times \hat{y}$: probability transfer function
+* $\hat{y}'$: predicted noisy label probability
+* $\mathcal{L}_{\mathrm{NNA}}$: Nonlinear, Noise-Aware loss
+* $\mathcal{L}_{\mathrm{QC}}$: Quasi-Clustering loss
+
+The $l_1$ part can be implemented by fully connected layer without bias. The overall $\mathcal{L}$ is differentiable.
+
+## None-linear
+![None-linear](/asserts\post\2019-08-03-learning-with-noisy-labels\none_linear.png)
+![Linear](/asserts\post\2019-08-03-learning-with-noisy-labels\linear.png)
+
+The author derived the gradient of loss $\mathcal{L}$ with respect to $\Theta$ to show the in-depth view of this method.
+
+For none-linear transfer proposed in this paper(upper picture):
+
+$$
+\begin{aligned} \frac{\partial \mathcal{L}}{\partial \Theta} &=\frac{\partial \mathcal{L}}{\partial \hat{y}^{\prime}} \frac{\partial \sigma\left(t_{2}\right)}{\partial t_{2}} \frac{\partial l_{1}(\hat{y}, W)}{\partial \hat{y}} \frac{\partial \sigma\left(t_{1}\right)}{\partial t_{1}} \frac{\partial f_{1}(\Theta, x)}{\partial \Theta} \\ &=\frac{\partial \mathcal{L}}{\partial \hat{y}^{\prime}}\left(\frac{\partial \sigma\left(t_{2}\right)}{\partial t_{2}} W \frac{\partial \sigma\left(t_{1}\right)}{\partial t_{1}}\right) \frac{\partial f_{1}(\Theta, x)}{\partial \Theta} \end{aligned}
+$$
+
+For linear transfer normally used(lower picture):
+
+$$
+\begin{aligned} \frac{\partial \mathcal{L}}{\partial \Theta} &=\frac{\partial \mathcal{L}}{\partial \hat{y}^{\prime}} \frac{\partial l_{1}(\hat{y}, \sigma(W))}{\partial \hat{y}} \frac{\partial \sigma\left(t_{1}\right)}{\partial t_{1}} \frac{\partial f_{1}(\Theta, x)}{\partial \Theta} \\ &=\frac{\partial \mathcal{L}}{\partial \hat{y}^{\prime}}\left(\sigma(W) \frac{\partial \sigma\left(t_{1}\right)}{\partial t_{1}}\right) \frac{\partial f_{1}(\Theta, x)}{\partial \Theta} \end{aligned}
+$$
+
+According to the author:
+> We find that the NNAQC denoising operator is more diffuse than the linear noise model. A more diffuse operator allows for more flexibility in
+handling disagreements between the CNN model predic- tions and the noisy labels. 
+
+Notice the middle part:
+
+$$\frac{\partial \sigma\left(t_{2}\right)}{\partial t_{2}} W \frac{\partial \sigma\left(t_{1}\right)}{\partial t_{1}}$$
+
+Combination of $\frac{\partial \sigma\left(t_{2}\right)}{\partial t_{2}}$ and $\frac{\partial \sigma\left(t_{1}\right)}{\partial t_{1}}$ wipes out most of the gradient when $\hat{y}$ and $y'$ disagree.
+
+Also the NNAQC prevent overconfident when prediction and the label agrees.
+
+# Some of my thoughts
+
+## On calculation of variation
+Recently, image prior work (Ulyanov D., Vedaldi A., L. V. (2018). Deep Image Prior. Cvpr) shows the the CNN architecture seems to learn the images first and then overfitting occurs alone the optimizing steps. I'm not sure if this occurs in classification too. Assume that the network learn useful things first and then overfit noise, the errors and predictions alone the training step seems to be a good source for learning the noisy labels. For example, we can collect the predictions of the training samples, and then use both the prediction and the label as the feature to training a noise model. Some standard and normalized measurement must be designed for this purpose, since it has to be unsupervised.
+
+Bootstrap to get the uncertainty of each samples, and then learns the noisy model?
+
+The noisy model has to be sample-dependent. It best to be sample and class dependent.
+
+## instance dependent transfer function
+The easiest way I can think of is to make the transfer matrix a function. 
+
+$$ W = w(\Theta) $$
