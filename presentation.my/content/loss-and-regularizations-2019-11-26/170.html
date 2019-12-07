@@ -1,0 +1,35 @@
+---
+layout: presentation
+title: <a href="https://ruder.io/multi-task/index.html#introduction">Why MTL?</a>
+date: 2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 160
+next: 180
+---
+
+<div class="col col-12">
+    <ul>
+        <li>Implicit data augmentation</li>
+        <li>Attention focusing</li>
+        <li>Representation bias</li>
+    </ul>
+    <p>MTL acts as a regularizer by introducing an inductive bias.</p>
+</div>
+
+<!-- 
+    MTL effectively increases the sample size that we are using for training our model. As all tasks are at least somewhat noisy, when training a model on some task A
+, our aim is to learn a good representation for task 
+A
+ that ideally ignores the data-dependent noise and generalizes well. As different tasks have different noise patterns, a model that learns two tasks simultaneously is able to learn a more general representation. Learning just task 
+A
+ bears the risk of overfitting to task 
+A
+, while learning 
+A
+ and 
+B
+ jointly enables the model to obtain a better representation 
+F
+ through averaging the noise patterns.
+
+ -->

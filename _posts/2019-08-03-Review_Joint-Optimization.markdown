@@ -136,7 +136,7 @@ $$
 \operatorname{Risk}(f)=\int \overline{\operatorname{err}}(f(x), y) d P(x, y)
 $$
 
-- $|t|_+$ is the positive part of $t$
+- $\varepsilon t|_+$ is the positive part of $t$
 - $\operatorname{rank}_{y}^{1}(f(x))$ is the margin penalized rank of $y$
 - $\operatorname{Risk}(f)$ is what we want to minimize
 
@@ -247,7 +247,7 @@ Using soft label cause a problem. $\mathcal{L}_c=0$ become if soft label is used
 $$\mathcal{L}_{e}=-\frac{1}{n} \sum_{i=1}^{n} \sum_{j=1}^{c} s_{j}\left(\boldsymbol{\theta}, \boldsymbol{x}_{i}\right) \log s_{j}\left(\boldsymbol{\theta}, \boldsymbol{x}_{i}\right)$$
 
 The plot of $-x\log(x)$ is like this:
-![Frame work](/asserts\post\2019-08-03-learning-with-noisy-labels\joint_optim_2.png)
+![Frame work](/asserts/post/2019-08-03-learning-with-noisy-labels/joint_optim_2.png)
 
 So basically this regularization will push $s_{j}(\boldsymbol{\theta}, \boldsymbol{x}_{i})$ towards 0 or 1. But in fact, both $\mathcal{L}_p$ and $\mathcal{L}_e$ will make the optimization out of local minimum. And there is no experiment to prove that $\mathcal{L}_e$ actually help with the situation.
 
@@ -257,7 +257,7 @@ So basically this regularization will push $s_{j}(\boldsymbol{\theta}, \boldsymb
 
 The author presented a Nonlinear, Noise-aware, Quasi-clustering (NNAQC), a method for learning deep convolutional networks from datasets corrupted by unknown label noise.
 ## Framework
-![Frame work](/asserts\post\2019-08-03-learning-with-noisy-labels\NNAQC.png)
+![Frame work](/asserts/post/2019-08-03-learning-with-noisy-labels/NNAQC.png)
 
 $$
 \mathcal{L}\left(\Theta, W ; \mathcal{D}^{\prime}\right)=\alpha \mathcal{L}_{\mathrm{NNA}}\left(\Theta, W ; \mathcal{D}^{\prime}\right)+(1-\alpha) \mathcal{L}_{\mathrm{QC}}\left(\Theta ; \mathcal{D}^{\prime}\right)
@@ -284,8 +284,8 @@ $$
 The $l_1$ part can be implemented by fully connected layer without bias. The overall $\mathcal{L}$ is differentiable.
 
 ## None-linear
-![None-linear](/asserts\post\2019-08-03-learning-with-noisy-labels\none_linear.png)
-![Linear](/asserts\post\2019-08-03-learning-with-noisy-labels\linear.png)
+![None-linear](/asserts/post/2019-08-03-learning-with-noisy-labels/none_linear.png)
+![Linear](/asserts/post/2019-08-03-learning-with-noisy-labels/linear.png)
 
 The author derived the gradient of loss $\mathcal{L}$ with respect to $\Theta$ to show the in-depth view of this method.
 
@@ -313,7 +313,9 @@ Combination of $\frac{\partial \sigma\left(t_{2}\right)}{\partial t_{2}}$ and $\
 
 Also the NNAQC prevent overconfident when prediction and the label agrees.
 
-# Some of my thoughts
+# 
+
+# shit
 
 ## On calculation of variation
 Recently, image prior work (Ulyanov D., Vedaldi A., L. V. (2018). Deep Image Prior. Cvpr) shows the the CNN architecture seems to learn the images first and then overfitting occurs alone the optimizing steps. I'm not sure if this occurs in classification too. Assume that the network learn useful things first and then overfit noise, the errors and predictions alone the training step seems to be a good source for learning the noisy labels. For example, we can collect the predictions of the training samples, and then use both the prediction and the label as the feature to training a noise model. Some standard and normalized measurement must be designed for this purpose, since it has to be unsupervised.
@@ -326,3 +328,4 @@ The noisy model has to be sample-dependent. It best to be sample and class depen
 The easiest way I can think of is to make the transfer matrix a function. 
 
 $$ W = w(\Theta) $$
+

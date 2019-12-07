@@ -1,0 +1,26 @@
+---
+layout: presentation
+title:  "Self Training"
+date:   2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 100
+next: 120
+---
+
+<div class="col col-12">
+        <ol>
+            <li>Train $f$ form $(X_l,, Y_l)$</li>
+            <li>Predict on $x \in X_u$</li>
+            <li>Add $(X, F(x))$ to labeled data</li>
+            <li>goto 1</li>
+        </ol>
+    </div>
+    
+    <div class="col col-12">
+    
+        <ul>
+            <li>Simple, easy to wrap</li>
+            <li>Early mistakes could reinforce themselves.</li>
+            <li>Convergence problem</li>
+        </ul>
+    </div>

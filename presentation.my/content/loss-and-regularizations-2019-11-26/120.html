@@ -1,0 +1,30 @@
+---
+layout: presentation
+title:  "Generative Models"
+date:   2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 110
+next: 130
+---
+
+<div class="col col-7">
+    GMM as an example:
+    
+    <div style="font-size: 80%;">
+
+            \begin{align}
+                \log & p(X_l, Y_l, X_u|\theta)  = \\
+                        & \sum^l_{i=1} \log p(y_i|\theta)p(x_i|y_i,\theta) + \\
+                        & \sum^{l+u}_{l+1}log \left(\sum_{y=1}^c p(y|\theta)p(x_i|y,\theta) \right)
+
+            \end{align}
+    </div>
+</div>
+
+<div class="col col-5">
+    <img src="imgs/120.png">
+</div>
+<div class="col col-12">
+    Clear, effective of model is close to correct, unlabeled data hurt if generative model is wrong
+</div>
+

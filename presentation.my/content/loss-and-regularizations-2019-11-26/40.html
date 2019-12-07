@@ -1,0 +1,28 @@
+---
+layout: presentation
+title:  "$L^2$ Regularization(Weight Decay)"
+date:   2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 30
+next: 50
+---
+
+
+<div class="col col-12">
+    $$ \tilde{J}(\mathbf{w};\mathbf{X},\mathbf{y}) =
+     J(\mathbf{w}; \mathbf{X}, \mathbf{y}) + \frac{\alpha}{2}\mathbf{w}^\top \mathbf{w}
+     $$
+    $$
+    \nabla_w\tilde{J}(\mathbf{w};\mathbf{X},\mathbf{y}) =
+    \nabla_w J(\mathbf{w}; \mathbf{X}, \mathbf{y}) + \alpha\mathbf{w}
+    $$
+</div>
+<div class="col col-8">
+    <ul>
+        <li>also known as ridge regression or Tikhonov regularization</li>
+        <li>not robust to outliers</li>
+    </ul>
+</div>
+<div class="col col-4">
+    <img src="imgs/40.png">
+</div>

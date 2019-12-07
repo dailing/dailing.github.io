@@ -1,0 +1,23 @@
+---
+layout: presentation
+title:  "Bayesian inference"
+date:   2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 70
+next: 80
+---
+
+
+<div class="col col-12" style="font-size:80%;">
+    $$ P(H|E) = \frac{P(E|H)\cdot P(H)}{P(E)} $$
+    \begin{align} 
+    p(\theta \mid \mathbf {X} ,\alpha )&={\frac {p(\theta ,\mathbf {X} ,\alpha )}{p(\mathbf {X} ,\alpha )}}={\frac {p(\mathbf {X} \mid \theta ,\alpha )p(\theta ,\alpha )}{p(\mathbf {X} \mid \alpha )p(\alpha )}}={\frac {p(\mathbf {X} \mid \theta ,\alpha )p(\theta \mid \alpha )}{p(\mathbf {X} \mid \alpha )}} \\\\ 
+        &\propto p(\mathbf {X} \mid \theta ,\alpha )p(\theta \mid \alpha )
+    \end{align}
+</div>
+<div class="col col-12">
+    <ul>
+        <li>$H$ : hypothesis</li>
+        <li>$E$ : evidence</li>
+    </ul>
+</div>

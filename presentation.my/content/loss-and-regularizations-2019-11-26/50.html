@@ -1,0 +1,27 @@
+---
+layout: presentation
+title:  "$L^1$ Regularization"
+date:   2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 40
+next: 60
+---
+
+
+<div class="col col-12">
+   $$\Omega(\theta)= ||w||_1=\sum_{i}{|w_i|} $$
+   $$
+   \nabla_w\tilde{J}(\mathbf{w};\mathbf{X},\mathbf{y}) =
+    \nabla_w J(\mathbf{w}; \mathbf{X}, \mathbf{y}) + \alpha sign(\mathbf{w})
+    $$
+</div>
+<div class="col col-8">
+    <ul>
+        <li>generates simple and interpretable model</li>
+        <li>more sparse</li>
+        <li>robust to outliers</li>
+    </ul>
+</div>
+<div class="col col-4">
+    <img src="imgs/50.png">
+</div>

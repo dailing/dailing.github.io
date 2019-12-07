@@ -1,0 +1,28 @@
+---
+layout: presentation
+title:  "Label Smoothing"
+date:   2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 80
+next: 100
+---
+
+
+<p>
+    mistakes in labels is harmful to maximize $\log p(y|x)$.
+</p>
+<p>    
+    assume with a small constant $\epsilon$, label $y$ is correct, we can regularize a model by change the target:
+    <ul>
+        <li>
+            $0 \rightarrow \frac{\epsilon}{k-1} $
+        </li>
+        <li>
+            $1 \rightarrow 1-\epsilon$
+        </li>
+    </ul>
+</p>
+
+<p>
+    Label smoothing prevent the output becoming too large. Similar to weight decay.
+</p>

@@ -1,0 +1,21 @@
+---
+layout: presentation
+title:  "Weight Noise"
+date:   2019-07-26 12:10:09 +0800
+categories: deeplearning
+prev: 70
+next: 90
+---
+
+<p>consider a regression task</p>
+<div class="col col-12">
+    $$ J=\mathbb{E}_{p({x},y)}[(\hat{y}({x}) - y)^2] $$
+</div>
+<p>
+    now assume that with each input presentation we also include a random perturbation:
+    $ \epsilon_W\sim\mathcal{N}(\epsilon; 0, \eta I) $
+    Minimization of 
+        $$ \tilde{J}=\mathbb{E}_{p({x},y_{\epsilon_w}, \epsilon_W)}[(\hat{y}({x}) - y)^2] $$
+    is equivalent to minimization of $J$ with additional term:
+    $$ \eta\mathbb{E}_p(x,y)[\| \nabla w\hat{y}(x) \|^2] $$
+</p>

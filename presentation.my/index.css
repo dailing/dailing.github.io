@@ -15,7 +15,7 @@
 }
 
 .slide.active {
-    background-color: rgb(224, 224, 224);
+    background-color: rgb(255, 255, 255);
     visibility: visible;
 }
 
