@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "2020-01-03-Report"
+date:   2019-03-28 18:10:09 +0800
+categories: other
+---
+
+# 文献
+
+大量cvd风险因子文章。眼底相关的主要有这几类：
+
+### PDR， NPDR，或者眼底相关特征风险因子
+
+* [Gimeno-Orna J A, Faure-Nogueras E, Castro-Alonso F J, et al. Ability of retinopathy to predict cardiovascular disease in patients with type 2 diabetes mellitus[J]. The American journal of cardiology, 2009, 103(10): 1364-1367.](https://www.sciencedirect.com/science/article/pii/S0002914909004627)
+Nonproliferative和Proliferative作为风险因子，结论： 
+Therefore retinopathy could be considered a new risk marker
+for long-term hyperglycemia and CVD.
+
+
+* [Vuong L N, Thulasi P, Biousse V, et al. Ocular fundus photography of patients with focal neurologic deficits in an emergency department[J]. Neurology, 2015, 85(3): 256-262.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4516298/)
+用了一些更细粒度的眼底特征做风险因素
+![](2.jpg)
+
+* [Ho H, Cheung C Y, Sabanayagam C, et al. Retinopathy signs improved prediction and reclassification of cardiovascular disease risk in diabetes: a prospective cohort study[J]. Scientific reports, 2017, 7: 41492.](https://www.nature.xilesou.top/articles/srep41492#Tab1)
+用静脉、动脉血管直径，有无DR 作为risk factor
+
+* [Klein BEK, Klein R, McBride PE, et al. Cardiovascular Disease, Mortality, and Retinal Microvascular Characteristics in Type 1 Diabetes: Wisconsin Epidemiologic Study of Diabetic Retinopathy. Arch Intern Med. 2004;164(17):1917–1924. doi:https://doi.org/10.1001/archinte.164.17.1917](https://jamanetwork.com/journals/jamainternalmedicine/article-abstract/217376)
+使用DR分级做risk factor.
+
+* [Vaghefi, E., Yang, S., Hill, S. et al. Detection of smoking status from retinal images; a Convolutional Neural Network study. Sci Rep 9, 7180 (2019) doi:10.1038/s41598-019-43670-0](https://www.nature.xilesou.top/articles/s41598-019-43670-0) 用fundus做吸烟情况预测，同时用attention map可视化结果
+![](6.png)
+
+*  [Farrah, T.E., Webb, D.J. & Dhaun, N. Retinal fingerprints for precision profiling of cardiovascular risk. Nat Rev Cardiol 16, 379–381 (2019) doi:10.1038/s41569-019-0205-2](https://www.nature.com/articles/s41569-019-0205-2#citeas) 用眼底图片预测risk factor，和CVD事件。文章表明加入眼底图片对CVD预测没有太多提高。
+For predicting incident CVD, the
+algorithm offered little improvement over a conventional CVD risk-scoring tool, but encouragingly showed
+equivalent power. 
+
+
+
+* [Poplin R, Varadarajan A V, Blumer K, et al. Prediction of cardiovascular risk factors from retinal fundus photographs via deep learning[J]. Nature Biomedical Engineering, 2018, 2(3): 158.](https://www.nature.com/articles/s41551-018-0195-0)
+![](3.png)
+Baseline characteristics of patients in the development and validation sets
+![](4.png)
+Algorithm performance on predicting cardiovascular risk factors in the two validation sets
+![](5.png)
